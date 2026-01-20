@@ -166,8 +166,8 @@ body {
 
 #enemy-hero {
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -100%) translateY(-100px);
+    left: 22%;
+    transform: translate(-50%, -50%) translateY(-140px);
     cursor: pointer;
 }
 
@@ -181,8 +181,8 @@ body {
 
 #player-hero {
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, 0%) translateY(100px);
+    left: 22%;
+    transform: translate(-50%, -50%) translateY(140px);
 }
 
 /* === DECK PILES === */
@@ -193,12 +193,12 @@ body {
     align-items: center;
     gap: 8px;
     z-index: 10;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 12%;
+    transform: translateX(50%);
 }
 
 .deck-pile img {
-    width: 130px;
+    width: 100px;
     height: auto;
     filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.8));
     cursor: pointer;
@@ -210,21 +210,23 @@ body {
 }
 
 .deck-pile .deck-count {
-    font-size: 20px;
+    font-size: 18px;
     color: #c8aa64;
     text-shadow: 2px 2px 3px #000;
     background: rgba(20, 25, 30, 0.9);
-    padding: 5px 16px;
+    padding: 4px 14px;
     border-radius: 4px;
     border: 1px solid #50463c;
 }
 
 #enemy-deck {
-    left: calc(26% - 80px);
+    top: 50%;
+    transform: translateX(50%) translateY(-50%) translateY(-140px);
 }
 
 #player-deck {
-    right: calc(26% - 80px);
+    top: 50%;
+    transform: translateX(50%) translateY(-50%) translateY(140px);
 }
 
 /* === GRAVEYARD === */
@@ -261,12 +263,12 @@ body {
 
 #player-graveyard {
     bottom: 220px;
-    left: 30px;
+    right: 30px;
 }
 
 #enemy-graveyard {
     top: 30px;
-    right: 30px;
+    left: 30px;
 }
 
 /* === RIGHT SIDE CONTROLS === */
@@ -368,18 +370,6 @@ body {
     margin-right: -40px;
 }
 
-/* Enemy hand fan arc (inverted) */
-.card-back:nth-child(1) { transform: rotate(12deg) translateY(20px); }
-.card-back:nth-child(2) { transform: rotate(9deg) translateY(12px); }
-.card-back:nth-child(3) { transform: rotate(6deg) translateY(6px); }
-.card-back:nth-child(4) { transform: rotate(3deg) translateY(2px); }
-.card-back:nth-child(5) { transform: rotate(0deg) translateY(0px); }
-.card-back:nth-child(6) { transform: rotate(-3deg) translateY(2px); }
-.card-back:nth-child(7) { transform: rotate(-6deg) translateY(6px); }
-.card-back:nth-child(8) { transform: rotate(-9deg) translateY(12px); }
-.card-back:nth-child(9) { transform: rotate(-12deg) translateY(20px); }
-.card-back:nth-child(10) { transform: rotate(-15deg) translateY(30px); }
-
 /* === BOARDS === */
 .board {
     display: flex;
@@ -387,7 +377,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 10px;
-    margin: 0 26%;
+    margin: 0 18% 0 30%;
     min-height: 175px;
     transition: background 0.2s;
     cursor: pointer;
@@ -422,48 +412,55 @@ body {
     overflow: visible;
 }
 
+/* Card slot - fixed size hover zone */
+.card-slot {
+    position: relative;
+    width: 100px;
+    height: 240px;
+    margin: 0 -15px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.card-slot:first-child {
+    margin-left: -40px;
+}
+
+.card-slot:last-child {
+    margin-right: -40px;
+}
+
 /* === HAND CARDS (fan arc extending beyond screen) === */
 #player-hand .card {
     width: 170px;
     height: 238px;
-    margin: 0 -35px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, z-index 0s;
-    transform-origin: bottom center;
-    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transform-origin: center bottom;
+    position: absolute;
+    bottom: 0;
+    /* Card is clickable but slot handles hover zone */
 }
 
-#player-hand .card:first-child {
-    margin-left: -60px;
+/* Hover on slot triggers card popup - using JS-controlled class for smooth navigation */
+.card-slot.slot-hover {
+    z-index: 200 !important;
 }
 
-#player-hand .card:last-child {
-    margin-right: -60px;
-}
-
-/* Dynamic fan arc - cards rotate and shift vertically for arc effect */
-#player-hand .card:nth-child(1) { transform: rotate(-12deg) translateY(25px); }
-#player-hand .card:nth-child(2) { transform: rotate(-9deg) translateY(15px); }
-#player-hand .card:nth-child(3) { transform: rotate(-6deg) translateY(8px); }
-#player-hand .card:nth-child(4) { transform: rotate(-3deg) translateY(3px); }
-#player-hand .card:nth-child(5) { transform: rotate(0deg) translateY(0px); }
-#player-hand .card:nth-child(6) { transform: rotate(3deg) translateY(3px); }
-#player-hand .card:nth-child(7) { transform: rotate(6deg) translateY(8px); }
-#player-hand .card:nth-child(8) { transform: rotate(9deg) translateY(15px); }
-#player-hand .card:nth-child(9) { transform: rotate(12deg) translateY(25px); }
-#player-hand .card:nth-child(10) { transform: rotate(15deg) translateY(38px); }
-
-#player-hand .card:hover {
-    transform: translateY(-100px) scale(1.35) rotate(0deg) !important;
+.card-slot.slot-hover .card {
+    transform: translateY(-120px) scale(1.4) rotate(0deg) !important;
     box-shadow: 
         inset 0 0 0 1px #0a0a10,
         inset 0 0 0 3px #c8aa64,
         0 25px 50px rgba(0,0,0,0.9);
-    z-index: 100;
 }
 
-#player-hand .card.selected {
-    transform: translateY(-110px) scale(1.4) rotate(0deg) !important;
-    z-index: 101;
+.card-slot .card.selected {
+    transform: translateY(-130px) scale(1.45) rotate(0deg) !important;
+}
+
+.card-slot:has(.card.selected) {
+    z-index: 201 !important;
 }
 
 /* Adjust hand card inner elements for larger size */

@@ -1286,13 +1286,29 @@ function render() {
                          (game.pendingSpell && game.selectionType === 'target_any_or_hero');
     enemyHero.classList.toggle('targetable', canTargetHero);
     
-    // Enemy hand
+    // Enemy hand with dynamic fan
     const enemyHand = document.getElementById('enemy-hand');
     enemyHand.innerHTML = '';
-    for (let i = 0; i < game.enemy.hand.length; i++) {
+    const enemyHandSize = game.enemy.hand.length;
+    for (let i = 0; i < enemyHandSize; i++) {
         const img = document.createElement('img');
         img.className = 'card-back';
         img.src = 'images/card_back.png';
+        
+        // Calculate fan position centered on hand (inverted for enemy)
+        const centerIndex = (enemyHandSize - 1) / 2;
+        const offset = i - centerIndex;
+        
+        // Rotation (inverted for top of screen)
+        const maxRotation = Math.min(12, 4 + enemyHandSize);
+        const rotationStep = enemyHandSize > 1 ? (maxRotation * 2) / (enemyHandSize - 1) : 0;
+        const rotation = -offset * rotationStep;
+        
+        // Y offset for arc
+        const yOffset = Math.abs(offset) * Math.abs(offset) * 5;
+        
+        img.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px)`;
+        
         enemyHand.appendChild(img);
     }
     
@@ -1300,12 +1316,39 @@ function render() {
     renderBoard(game.enemy, 'enemy-board', true);
     renderBoard(game.player, 'player-board', false);
     
-    // Player hand
+    // Player hand with dynamic fan
     const handEl = document.getElementById('player-hand');
     handEl.innerHTML = '';
-    for (const card of game.player.hand) {
-        handEl.appendChild(createCardElement(card, false, false, !canPlayCard(game.player, card)));
-    }
+    const handSize = game.player.hand.length;
+    game.player.hand.forEach((card, index) => {
+        // Create wrapper for hover zone (fixed size hit area)
+        const wrapper = document.createElement('div');
+        wrapper.className = 'card-slot';
+        
+        const cardEl = createCardElement(card, false, false, !canPlayCard(game.player, card));
+        
+        // Calculate fan position centered on hand
+        const centerIndex = (handSize - 1) / 2;
+        const offset = index - centerIndex;
+        
+        // Rotation: gentler, more consistent
+        const maxRotation = Math.min(15, 5 + handSize * 0.8);
+        const rotationStep = handSize > 1 ? (maxRotation * 2) / (handSize - 1) : 0;
+        const rotation = offset * rotationStep;
+        
+        // Y offset: gentler linear curve instead of parabolic
+        const yOffset = Math.abs(offset) * 6;
+        
+        // Z-index: rightmost cards on top (newer cards drawn land on top)
+        const zIndex = 20 + index;
+        
+        wrapper.style.zIndex = zIndex;
+        cardEl.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px)`;
+        cardEl.dataset.fanIndex = index;
+        
+        wrapper.appendChild(cardEl);
+        handEl.appendChild(wrapper);
+    });
     
     // Deck/Graveyard counts
     document.getElementById('player-deck-count').textContent = game.player.deck.length;
@@ -1623,6 +1666,66 @@ function backToMenu() {
 // EVENT LISTENERS
 // ============================================================================
 
+// Track which card slot is being hovered
+let hoveredSlotIndex = -1;
+
+function updateHandHover(e) {
+    const handEl = document.getElementById('player-hand');
+    if (!handEl) return;
+    
+    const slots = handEl.querySelectorAll('.card-slot');
+    if (slots.length === 0) return;
+    
+    const handRect = handEl.getBoundingClientRect();
+    const mouseY = e.clientY;
+    
+    // Only track if mouse is in the lower portion of the screen (hand area)
+    if (mouseY < handRect.top - 50) {
+        if (hoveredSlotIndex !== -1) {
+            slots.forEach(s => s.classList.remove('slot-hover'));
+            hoveredSlotIndex = -1;
+        }
+        return;
+    }
+    
+    const mouseX = e.clientX;
+    let newHoveredIndex = -1;
+    
+    // Find which slot the mouse X position is closest to
+    slots.forEach((slot, index) => {
+        const rect = slot.getBoundingClientRect();
+        const slotCenterX = rect.left + rect.width / 2;
+        const slotWidth = rect.width;
+        
+        // Check if mouse X is within this slot's zone
+        if (mouseX >= rect.left && mouseX <= rect.right) {
+            newHoveredIndex = index;
+        }
+    });
+    
+    // If between slots, find closest
+    if (newHoveredIndex === -1) {
+        let closestDist = Infinity;
+        slots.forEach((slot, index) => {
+            const rect = slot.getBoundingClientRect();
+            const slotCenterX = rect.left + rect.width / 2;
+            const dist = Math.abs(mouseX - slotCenterX);
+            if (dist < closestDist && mouseX >= rect.left - 20 && mouseX <= rect.right + 20) {
+                closestDist = dist;
+                newHoveredIndex = index;
+            }
+        });
+    }
+    
+    if (newHoveredIndex !== hoveredSlotIndex) {
+        slots.forEach(s => s.classList.remove('slot-hover'));
+        if (newHoveredIndex !== -1) {
+            slots[newHoveredIndex].classList.add('slot-hover');
+        }
+        hoveredSlotIndex = newHoveredIndex;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('play-btn')?.addEventListener('click', startGame);
     document.getElementById('end-turn-btn')?.addEventListener('click', endTurn);
@@ -1633,6 +1736,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('back-to-menu-btn')?.addEventListener('click', backToMenu);
     
     document.addEventListener('mousemove', onDrag);
+    document.addEventListener('mousemove', updateHandHover);
     document.addEventListener('mouseup', endDrag);
     document.addEventListener('touchmove', onDrag, { passive: false });
     document.addEventListener('touchend', endDrag);
