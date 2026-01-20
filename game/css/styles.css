@@ -17,6 +17,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .screen {
@@ -24,6 +25,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: visible;
 }
 
 .hidden {
@@ -80,6 +82,7 @@ body {
     background-size: cover;
     position: relative;
     height: 100vh;
+    overflow: visible;
 }
 
 /* === HERO PORTRAITS === */
@@ -164,7 +167,7 @@ body {
 #enemy-hero {
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -100%) translateY(-60px);
+    transform: translate(-50%, -100%) translateY(-100px);
     cursor: pointer;
 }
 
@@ -179,7 +182,7 @@ body {
 #player-hero {
     top: 50%;
     left: 50%;
-    transform: translate(-50%, 0%) translateY(60px);
+    transform: translate(-50%, 0%) translateY(100px);
 }
 
 /* === DECK PILES === */
@@ -339,10 +342,11 @@ body {
 #enemy-hand {
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    padding: 8px;
-    min-height: 130px;
-    margin-top: 10px;
+    align-items: flex-start;
+    padding: 0;
+    min-height: 100px;
+    margin-top: -30px;
+    overflow: visible;
 }
 
 .card-back {
@@ -351,23 +355,40 @@ body {
     border-radius: 5px;
     box-shadow: 3px 3px 8px rgba(0,0,0,0.6);
     transition: transform 0.15s;
-    margin-left: -30px;
+    margin: 0 -25px;
     object-fit: cover;
+    transform-origin: top center;
 }
 
 .card-back:first-child {
-    margin-left: 0;
+    margin-left: -40px;
 }
+
+.card-back:last-child {
+    margin-right: -40px;
+}
+
+/* Enemy hand fan arc (inverted) */
+.card-back:nth-child(1) { transform: rotate(12deg) translateY(20px); }
+.card-back:nth-child(2) { transform: rotate(9deg) translateY(12px); }
+.card-back:nth-child(3) { transform: rotate(6deg) translateY(6px); }
+.card-back:nth-child(4) { transform: rotate(3deg) translateY(2px); }
+.card-back:nth-child(5) { transform: rotate(0deg) translateY(0px); }
+.card-back:nth-child(6) { transform: rotate(-3deg) translateY(2px); }
+.card-back:nth-child(7) { transform: rotate(-6deg) translateY(6px); }
+.card-back:nth-child(8) { transform: rotate(-9deg) translateY(12px); }
+.card-back:nth-child(9) { transform: rotate(-12deg) translateY(20px); }
+.card-back:nth-child(10) { transform: rotate(-15deg) translateY(30px); }
 
 /* === BOARDS === */
 .board {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
-    padding: 8px;
+    gap: 8px;
+    padding: 10px;
     margin: 0 26%;
-    min-height: 140px;
+    min-height: 175px;
     transition: background 0.2s;
     cursor: pointer;
 }
@@ -375,12 +396,12 @@ body {
 /* Position boards close to center line */
 #enemy-board {
     align-items: flex-end;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
 }
 
 #player-board {
     align-items: flex-start;
-    padding-top: 5px;
+    padding-top: 8px;
 }
 
 .board.drop-target {
@@ -393,43 +414,46 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    padding: 15px 15%;
-    min-height: 250px;
+    padding: 0;
+    min-height: 200px;
     z-index: 25;
+    position: relative;
+    margin-bottom: -40px;
+    overflow: visible;
+}
+
+/* === HAND CARDS (fan arc extending beyond screen) === */
+#player-hand .card {
+    width: 170px;
+    height: 238px;
+    margin: 0 -35px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, z-index 0s;
+    transform-origin: bottom center;
     position: relative;
 }
 
-/* === HAND CARDS (larger, with pop-out hover) === */
-#player-hand .card {
-    width: 150px;
-    height: 210px;
-    margin: 0 -20px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, z-index 0s;
-    transform-origin: bottom center;
-}
-
 #player-hand .card:first-child {
-    margin-left: 0;
+    margin-left: -60px;
 }
 
 #player-hand .card:last-child {
-    margin-right: 0;
+    margin-right: -60px;
 }
 
-/* Fan effect - cards slightly rotated */
-#player-hand .card:nth-child(1) { transform: rotate(-6deg); }
-#player-hand .card:nth-child(2) { transform: rotate(-4deg); }
-#player-hand .card:nth-child(3) { transform: rotate(-2deg); }
-#player-hand .card:nth-child(4) { transform: rotate(0deg); }
-#player-hand .card:nth-child(5) { transform: rotate(2deg); }
-#player-hand .card:nth-child(6) { transform: rotate(4deg); }
-#player-hand .card:nth-child(7) { transform: rotate(6deg); }
-#player-hand .card:nth-child(8) { transform: rotate(8deg); }
-#player-hand .card:nth-child(9) { transform: rotate(10deg); }
-#player-hand .card:nth-child(10) { transform: rotate(12deg); }
+/* Dynamic fan arc - cards rotate and shift vertically for arc effect */
+#player-hand .card:nth-child(1) { transform: rotate(-12deg) translateY(25px); }
+#player-hand .card:nth-child(2) { transform: rotate(-9deg) translateY(15px); }
+#player-hand .card:nth-child(3) { transform: rotate(-6deg) translateY(8px); }
+#player-hand .card:nth-child(4) { transform: rotate(-3deg) translateY(3px); }
+#player-hand .card:nth-child(5) { transform: rotate(0deg) translateY(0px); }
+#player-hand .card:nth-child(6) { transform: rotate(3deg) translateY(3px); }
+#player-hand .card:nth-child(7) { transform: rotate(6deg) translateY(8px); }
+#player-hand .card:nth-child(8) { transform: rotate(9deg) translateY(15px); }
+#player-hand .card:nth-child(9) { transform: rotate(12deg) translateY(25px); }
+#player-hand .card:nth-child(10) { transform: rotate(15deg) translateY(38px); }
 
 #player-hand .card:hover {
-    transform: translateY(-60px) scale(1.3) rotate(0deg) !important;
+    transform: translateY(-100px) scale(1.35) rotate(0deg) !important;
     box-shadow: 
         inset 0 0 0 1px #0a0a10,
         inset 0 0 0 3px #c8aa64,
@@ -438,45 +462,67 @@ body {
 }
 
 #player-hand .card.selected {
-    transform: translateY(-70px) scale(1.35) rotate(0deg) !important;
+    transform: translateY(-110px) scale(1.4) rotate(0deg) !important;
     z-index: 101;
 }
 
 /* Adjust hand card inner elements for larger size */
+#player-hand .card .card-inner {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+}
+
 #player-hand .card .card-cost {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-    top: -5px;
-    left: -5px;
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+    top: -6px;
+    left: -6px;
+}
+
+#player-hand .card .card-name {
+    padding: 6px 8px 6px 26px;
+    min-height: 28px;
 }
 
 #player-hand .card .card-name span {
-    font-size: 13px;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+}
+
+#player-hand .card .card-type {
+    padding: 4px 8px;
+    min-height: 20px;
 }
 
 #player-hand .card .card-type span {
-    font-size: 9px;
-}
-
-#player-hand .card .card-ability {
     font-size: 10px;
 }
 
+#player-hand .card .card-textbox {
+    padding: 8px 10px;
+}
+
+#player-hand .card .card-ability {
+    font-size: 11px;
+}
+
 #player-hand .card .stat-orb {
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    font-size: 17px;
 }
 
 #player-hand .card .stat-attack {
-    left: 8px;
-    bottom: -12px;
+    left: 10px;
+    bottom: -14px;
 }
 
 #player-hand .card .stat-life {
-    right: 8px;
-    bottom: -12px;
+    right: 10px;
+    bottom: -14px;
 }
 
 /* === CARDS === */
@@ -727,75 +773,75 @@ body {
 
 /* === CREATURES ON BOARD === */
 .creature {
-    width: 100px;
-    height: 140px;
+    width: 120px;
+    height: 168px;
 }
 
 .creature:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
 }
 
 .creature .card-inner {
-    top: 6px;
-    left: 6px;
-    right: 6px;
-    bottom: 6px;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
 }
 
 .creature .card-cost {
-    width: 22px;
-    height: 22px;
-    font-size: 11px;
-    top: -3px;
-    left: -3px;
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+    top: -4px;
+    left: -4px;
 }
 
 .creature .card-name {
-    padding: 2px 4px 2px 16px;
-    min-height: 18px;
+    padding: 4px 6px 4px 20px;
+    min-height: 22px;
 }
 
 .creature .card-name span {
-    font-size: 8px;
-    letter-spacing: 0.5px;
+    font-size: 10px;
+    letter-spacing: 0.8px;
 }
 
 .creature .card-type {
-    padding: 2px 4px;
-    min-height: 12px;
+    padding: 3px 6px;
+    min-height: 16px;
 }
 
 .creature .card-type span {
-    font-size: 6px;
+    font-size: 8px;
 }
 
 .creature .card-art {
-    flex: 0 0 38%;
+    flex: 0 0 40%;
 }
 
 .creature .card-textbox {
-    padding: 3px 4px;
+    padding: 5px 6px;
 }
 
 .creature .card-ability {
-    font-size: 7px;
-    line-height: 1.2;
+    font-size: 8px;
+    line-height: 1.25;
 }
 
 .creature .stat-orb {
-    width: 22px;
-    height: 22px;
-    font-size: 11px;
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
 }
 
 .creature .stat-attack {
-    left: 3px;
-    bottom: -8px;
+    left: 5px;
+    bottom: -10px;
 }
 
 .creature .stat-life {
-    right: 3px;
-    bottom: -8px;
+    right: 5px;
+    bottom: -10px;
 }
 
 /* === TARGETING === */
@@ -864,7 +910,6 @@ body {
 }
 
 .card.unplayable {
-    opacity: 0.5;
     cursor: not-allowed;
 }
 
