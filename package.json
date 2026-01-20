@@ -1,0 +1,26 @@
+{
+  "name": "grimdark-tcg",
+  "version": "0.1.0",
+  "description": "A Dark Fantasy Trading Card Game",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.grimdark.tcg",
+    "productName": "Grimdark TCG",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "portable"
+    }
+  }
+}

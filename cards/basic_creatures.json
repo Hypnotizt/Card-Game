@@ -1,0 +1,164 @@
+{
+  "basic_creatures": [
+    {
+      "id": "undead_001",
+      "name": "Shambling Corpse",
+      "type": "Creature — Undead",
+      "cost": 1,
+      "attack": 1,
+      "defense": 2,
+      "abilities": [],
+      "flavor": "It remembers nothing. It needs nothing. It stops for nothing."
+    },
+    {
+      "id": "undead_002",
+      "name": "Rotting Ghoul",
+      "type": "Creature — Undead",
+      "cost": 2,
+      "attack": 2,
+      "defense": 3,
+      "abilities": [],
+      "flavor": "The smell reaches you long before the claws do."
+    },
+    {
+      "id": "undead_003",
+      "name": "Skeletal Knight",
+      "type": "Creature — Undead",
+      "cost": 3,
+      "attack": 3,
+      "defense": 4,
+      "abilities": [],
+      "flavor": "Death did not release him from his oath."
+    },
+    {
+      "id": "undead_004",
+      "name": "Grave Hulk",
+      "type": "Creature — Undead",
+      "cost": 5,
+      "attack": 5,
+      "defense": 6,
+      "abilities": [],
+      "flavor": "Stitched from a dozen corpses. None of them are at rest."
+    },
+    {
+      "id": "demon_001",
+      "name": "Wretched Imp",
+      "type": "Creature — Demon",
+      "cost": 1,
+      "attack": 2,
+      "defense": 1,
+      "abilities": [],
+      "flavor": "Small. Spiteful. Everywhere."
+    },
+    {
+      "id": "demon_002",
+      "name": "Hellspawn",
+      "type": "Creature — Demon",
+      "cost": 2,
+      "attack": 3,
+      "defense": 2,
+      "abilities": [],
+      "flavor": "Born from embers and malice."
+    },
+    {
+      "id": "demon_003",
+      "name": "Pit Fiend",
+      "type": "Creature — Demon",
+      "cost": 4,
+      "attack": 5,
+      "defense": 4,
+      "abilities": [],
+      "flavor": "It has many names. You will learn none of them."
+    },
+    {
+      "id": "demon_004",
+      "name": "Bound Horror",
+      "type": "Creature — Demon",
+      "cost": 6,
+      "attack": 7,
+      "defense": 6,
+      "abilities": [],
+      "flavor": "The chains are not for your protection."
+    },
+    {
+      "id": "vampire_001",
+      "name": "Thrall",
+      "type": "Creature — Vampire",
+      "cost": 1,
+      "attack": 1,
+      "defense": 1,
+      "abilities": [],
+      "flavor": "They gave everything for a taste of eternity."
+    },
+    {
+      "id": "vampire_002",
+      "name": "Nightstalker",
+      "type": "Creature — Vampire",
+      "cost": 2,
+      "attack": 2,
+      "defense": 2,
+      "abilities": [],
+      "flavor": "You won't see it. You'll only feel the cold."
+    },
+    {
+      "id": "vampire_003",
+      "name": "Blood Knight",
+      "type": "Creature — Vampire",
+      "cost": 3,
+      "attack": 4,
+      "defense": 3,
+      "abilities": [],
+      "flavor": "Chivalry died with him. The hunger did not."
+    },
+    {
+      "id": "vampire_004",
+      "name": "Vampire Lord",
+      "type": "Creature — Vampire",
+      "cost": 5,
+      "attack": 5,
+      "defense": 5,
+      "abilities": [],
+      "flavor": "He has ruled longer than your kingdom has existed."
+    },
+    {
+      "id": "beast_001",
+      "name": "Dire Rat",
+      "type": "Creature — Beast",
+      "cost": 1,
+      "attack": 1,
+      "defense": 1,
+      "abilities": [],
+      "flavor": "Where there is one, there are hundreds."
+    },
+    {
+      "id": "beast_002",
+      "name": "Corrupted Wolf",
+      "type": "Creature — Beast",
+      "cost": 2,
+      "attack": 3,
+      "defense": 2,
+      "abilities": [],
+      "flavor": "The forest twisted it. Now it returns the favor."
+    },
+    {
+      "id": "beast_003",
+      "name": "Razorback",
+      "type": "Creature — Beast",
+      "cost": 3,
+      "attack": 3,
+      "defense": 4,
+      "abilities": [],
+      "flavor": "Tusks like swords. Hide like armor. Temperament like hell."
+    },
+    {
+      "id": "beast_004",
+      "name": "Hunting Horror",
+      "type": "Creature — Beast",
+      "cost": 4,
+      "attack": 4,
+      "defense": 5,
+      "abilities": [],
+      "flavor": "It doesn't eat because it's hungry. It eats because you're there."
+    }
+  ]
+}
